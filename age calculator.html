@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Advanced Age Calculator</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f2f2f2;
+text-align:center;
+margin-top:60px;
+}
+
+.container{
+background:white;
+padding:30px;
+width:380px;
+margin:auto;
+border-radius:10px;
+box-shadow:0 0 10px gray;
+}
+
+input{
+width:90%;
+padding:10px;
+margin:10px 0;
+}
+
+button{
+padding:10px 20px;
+background:#28a745;
+color:white;
+border:none;
+cursor:pointer;
+}
+
+.result{
+margin-top:20px;
+font-size:16px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Advanced Age Calculator</h2>
+
+<input type="date" id="dob">
+
+<button onclick="startAge()">Calculate Age</button>
+
+<div class="result" id="result"></div>
+
+</div>
+
+<script>
+
+let birthDate;
+
+function startAge(){
+birthDate = new Date(document.getElementById("dob").value);
+updateAge();
+setInterval(updateAge,1000);
+}
+
+function updateAge(){
+
+let now = new Date();
+
+let years = now.getFullYear() - birthDate.getFullYear();
+let months = now.getMonth() - birthDate.getMonth();
+let days = now.getDate() - birthDate.getDate();
+
+if(days < 0){
+months--;
+let lastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+days += lastMonth.getDate();
+}
+
+if(months < 0){
+years--;
+months += 12;
+}
+
+let diff = now - birthDate;
+
+let seconds = Math.floor(diff/1000);
+let minutes = Math.floor(seconds/60);
+let hours = Math.floor(minutes/60);
+
+let totalDays = Math.floor(diff/(1000*60*60*24));
+let totalMonths = years*12 + months;
+
+let nextBirthday = new Date(now.getFullYear(), birthDate.getMonth(), birthDate.getDate());
+
+if(now > nextBirthday){
+nextBirthday.setFullYear(now.getFullYear()+1);
+}
+
+let countdown = nextBirthday - now;
+
+let cdDays = Math.floor(countdown/(1000*60*60*24));
+let cdHours = Math.floor((countdown/(1000*60*60))%24);
+let cdMinutes = Math.floor((countdown/(1000*60))%60);
+
+document.getElementById("result").innerHTML =
+
+"Age: "+years+" Years "+months+" Months "+days+" Days <br><br>" +
+
+"Age in Hours: "+hours+" Hours <br>" +
+"Age in Minutes: "+minutes+" Minutes <br>" +
+"Age in Seconds: "+seconds+" Seconds <br><br>" +
+
+"Total Months: "+totalMonths+" Months <br>" +
+"Total Days: "+totalDays+" Days <br><br>" +
+
+"Next Birthday Countdown: <br>" +
+cdDays+" Days "+cdHours+" Hours "+cdMinutes+" Minutes";
+
+}
+
+</script>
+
+</body>
+</html>
